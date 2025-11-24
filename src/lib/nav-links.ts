@@ -1,11 +1,19 @@
 // src/lib/nav-links.ts
 import { Home, BarChart3, FileText, User } from "lucide-react";
+import { HandCoins } from 'lucide-react';
+import { BadgeDollarSign } from 'lucide-react';
 
 export const navLinks = [
   {
     href: "/dashboard",
     label: "Inicio",
     icon: Home, // <-- Icono de Lucide
+  },
+  {
+    href: "/budgets", // <-- ¡RUTA CORRECTA!
+    label: "Presupuestos",
+    icon: BadgeDollarSign, // <-- Icono de Lucide
+
   },
   {
     href: "/graficos", // <-- ¡RUTA CORRECTA!
@@ -20,6 +28,14 @@ export const navLinks = [
   {
     href: "/perfil", // <-- ¡RUTA CORRECTA!
     label: "Mi Perfil",
-    icon: User, // <-- Icono de Lucide
+    icon: User, // <-- Icono de Lucide // es un icono de la libreria lucide-react asi como Home, BarChart3, FileText, User
   },
+
+
+
+
+
+
+
 ];
+

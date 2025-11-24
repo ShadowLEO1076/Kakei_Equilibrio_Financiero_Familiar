@@ -8,6 +8,7 @@ type KpiCardProps = {
   percentageChange: string;
   Icon: LucideIcon; // ¡Podemos pasar un componente de icono como prop!
   iconColor?: string; // Color opcional para el icono
+  onClick?: () => void; // Prop opcional para manejar clics
 };
 
 export default function KpiCard({
@@ -16,10 +17,15 @@ export default function KpiCard({
   Icon,
   percentageChange,
   iconColor = "bg-teal-500", // Color por defecto
+  onClick,
 }: KpiCardProps) {
   return (
     // La tarjeta base: fíjate en el padding (p-6), bordes (rounded-xl) y la sombra sutil
-    <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+    <div
+      onClick={onClick}
+      className={`rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900 ${onClick ? "cursor-pointer transition-transform hover:scale-105" : ""
+        }`}
+    >
       <div className="flex items-center justify-between">
         <span className="text-sm font-medium text-gray-500 dark:text-slate-400">
           {title}
@@ -31,7 +37,7 @@ export default function KpiCard({
         </div>
       </div>
       <div className="mt-4">
-        <h3 className="text-3xl font-bold text-slate-900 dark:text-white">
+        <h3 className="text-2xl font-bold text-slate-900 dark:text-white">
           {amount}
         </h3>
         <p className="mt-1 text-sm text-gray-500 dark:text-slate-400">
