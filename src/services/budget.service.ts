@@ -4,33 +4,53 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export const budgetService = {
 
-    // Obtener los presupuestos actuales (Ya lo tenías)
+    // --- 1. LECTURA (GET) ---
+    // Trae la configuración actual para llenar los inputs
     async getAllByProfile(profileId: string) {
         const token = Cookies.get('token');
-        // Asegúrate que tu backend tenga esta ruta: GET /budgets/:profileId
+
+        // OJO AQUÍ: 
+        // Si en tu Router backend pusiste: router.get('/:profileId') -> Usa la línea de abajo.
+        // Si dejaste: router.get('/profile/:profileId') -> Agrega '/profile' a la URL.
         const res = await fetch(`${API_URL}/budgets/${profileId}`, {
-            headers: { 'Authorization': `Bearer ${token}` }
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
         });
-        if (!res.ok) return [];
+
+        if (!res.ok) {
+            // Si no hay presupuestos aún o falla, devolvemos array vacío para no romper la UI
+            return [];
+        }
+
         return await res.json();
     },
 
-    // GUARDAR O ACTUALIZAR (El que falta)
-    async saveBudgets(data: { profileId: string, budgets: any[] }) {
+    // --- 2. ESCRITURA EN LOTE (POST) ---
+    // Envía el array completo de categorías configuradas
+    async saveBudgets(data: { profileId: string; budgets: { categoryId: string; amount: number }[] }) {
         const token = Cookies.get('token');
 
-        // Asumimos ruta: POST /budgets/batch (o donde decidas procesar el array)
+        // Conecta con tu BudgetController.createBatch
         const res = await fetch(`${API_URL}/budgets`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             },
+            // El backend espera: { "profileId": "...", "budgets": [...] }
+            // Al pasar 'data' tal cual, cumplimos el contrato.
             body: JSON.stringify(data)
         });
 
         const json = await res.json();
-        if (!res.ok) throw new Error(json.error || 'Error al guardar presupuestos');
+
+        if (!res.ok) {
+            throw new Error(json.error || json.message || 'Error al guardar presupuestos');
+        }
+
         return json;
     }
 };
