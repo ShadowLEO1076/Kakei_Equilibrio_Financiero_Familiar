@@ -2,6 +2,7 @@
 import { Home, BarChart3, FileText, User } from "lucide-react";
 import { HandCoins } from 'lucide-react';
 import { BadgeDollarSign } from 'lucide-react';
+import { Settings as settings } from 'lucide-react';
 
 export const navLinks = [
   {
@@ -26,9 +27,14 @@ export const navLinks = [
     icon: FileText, // <-- Icono de Lucide
   },
   {
-    href: "/perfil", // <-- ¡RUTA CORRECTA!
+    href: "/profiles", // <-- ¡RUTA CORRECTA!
     label: "Mi Perfil",
     icon: User, // <-- Icono de Lucide // es un icono de la libreria lucide-react asi como Home, BarChart3, FileText, User
+  },
+  {
+    href: "/profiles", // <-- ¡RUTA CORRECTA!
+    label: "Configuracion",
+    icon: settings, // <-- Icono de Lucide // es un icono de la libreria lucide-react asi como Home, BarChart3, FileText, User
   },
 
 

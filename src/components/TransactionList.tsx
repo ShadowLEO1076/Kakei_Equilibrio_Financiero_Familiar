@@ -1,67 +1,90 @@
-// src/components/TransactionList.tsx
-import { ArrowUpRight, ArrowDownRight } from "lucide-react";
+"use client";
 
-// Datos de ejemplo (luego vendrán de la API)
-const transactions = [
-  {
-    id: 1,
-    title: "Salario Enero",
-    category: "Salario",
-    amount: 1200.00,
-    type: "income",
-  },
-  {
-    id: 2,
-    title: "Supermercado Mi Comisariato",
-    category: "Alimentación",
-    amount: -85.50,
-    type: "expense",
-  },
-  {
-    id: 3,
-    title: "Gasolina",
-    category: "Transporte",
-    amount: -45.00,
-    type: "expense",
-  },
-];
+import { ArrowUpIcon, ArrowDownIcon } from "lucide-react";
 
-export default function TransactionList() {
-  return (
-    // La misma tarjeta base "Apple-like" que ya conoces
-    <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-      <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
-        Transacciones Recientes
-      </h3>
+interface Transaction {
+  id: string;
+  amount: number;
+  description: string;
+  date: string;
+  type: 'expense' | 'income';
+  categoryName?: string;
+}
 
-      <div className="mt-4 flow-root">
-        <ul role="list" className="divide-y divide-gray-200 dark:divide-slate-800">
-          {transactions.map((tx) => (
-            <li key={tx.id} className="flex items-center justify-between py-4">
-              <div className="flex items-center space-x-4">
-                <div className={`rounded-full p-2 ${
-                    tx.type === "income" ? "bg-emerald-100 dark:bg-emerald-900" : "bg-rose-100 dark:bg-rose-900"
-                  }`}>
-                  {tx.type === "income" ? (
-                    <ArrowUpRight className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
-                  ) : (
-                    <ArrowDownRight className="h-5 w-5 text-rose-600 dark:text-rose-400" />
-                  )}
-                </div>
-                <div>
-                  <p className="font-medium text-slate-900 dark:text-white">{tx.title}</p>
-                  <p className="text-sm text-slate-500 dark:text-slate-400">{tx.category}</p>
-                </div>
-              </div>
-              <span className={`font-medium ${
-                  tx.type === "income" ? "text-emerald-600 dark:text-emerald-400" : "text-slate-900 dark:text-white"
-                }`}>
-                {tx.type === "income" ? "+" : ""}${tx.amount.toLocaleString("en-US", { minimumFractionDigits: 2 })}
-              </span>
-            </li>
-          ))}
-        </ul>
+interface TransactionListProps {
+  transactions: Transaction[];
+  isLoading: boolean;
+}
+
+export default function TransactionList({ transactions, isLoading }: TransactionListProps) {
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center py-12">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
       </div>
+    );
+  }
+
+  if (transactions.length === 0) {
+    return (
+      <div className="text-center py-12 text-slate-500 dark:text-slate-400">
+        No hay transacciones para mostrar
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-3">
+      {transactions.map((transaction) => (
+        <div
+          key={transaction.id}
+          className="flex items-center justify-between p-4 bg-white dark:bg-slate-800 rounded-lg shadow-sm hover:shadow-md transition-shadow"
+        >
+          <div className="flex items-center gap-4">
+            <div
+              className={`p-2 rounded-full ${transaction.type === 'income'
+                  ? 'bg-green-100 dark:bg-green-900/30'
+                  : 'bg-red-100 dark:bg-red-900/30'
+                }`}
+            >
+              {transaction.type === 'income' ? (
+                <ArrowUpIcon className="w-5 h-5 text-green-600 dark:text-green-400" />
+              ) : (
+                <ArrowDownIcon className="w-5 h-5 text-red-600 dark:text-red-400" />
+              )}
+            </div>
+            <div>
+              <p className="font-medium text-slate-800 dark:text-white">
+                {transaction.description}
+              </p>
+              {transaction.categoryName && (
+                <p className="text-sm text-slate-500 dark:text-slate-400">
+                  {transaction.categoryName}
+                </p>
+              )}
+              <p className="text-xs text-slate-400 dark:text-slate-500">
+                {new Date(transaction.date).toLocaleDateString('es-ES', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric'
+                })}
+              </p>
+            </div>
+          </div>
+          <div
+            className={`text-lg font-semibold ${transaction.type === 'income'
+                ? 'text-green-600 dark:text-green-400'
+                : 'text-red-600 dark:text-red-400'
+              }`}
+          >
+            {transaction.type === 'income' ? '+' : '-'}$
+            {transaction.amount.toLocaleString('es-ES', {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2
+            })}
+          </div>
+        </div>
+      ))}
     </div>
   );
 }

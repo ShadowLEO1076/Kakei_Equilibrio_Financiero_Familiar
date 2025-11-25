@@ -1,11 +1,11 @@
 // src/components/ui/CategoryIcon.tsx
 "use client";
 
-import { type LucideIcon } from "lucide-react"; // Importamos el tipo de un icono de Lucide
 import clsx from "clsx";
+import React from "react";
 
 type CategoryIconProps = {
-  Icon: LucideIcon;
+  Icon: React.ElementType;
   label: string;
   isActive?: boolean;
   onClick: () => void;

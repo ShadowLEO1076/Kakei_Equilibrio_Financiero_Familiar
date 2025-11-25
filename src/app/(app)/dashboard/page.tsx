@@ -5,7 +5,7 @@ import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import KpiCard from "@/components/ui/KpiCard";
-import TransactionList from "@/components/TransactionList"; // Asumo que ya tienes este componente o un placeholder
+import TransactionList from "@/components/TransactionList";
 import KakeiTip from "@/components/KakeiTip";
 import Modal from "@/components/ui/Modal";
 import DesktopTransactionForm from "@/components/DesktopTransactionForm";
@@ -29,6 +29,9 @@ export default function DashboardPage() {
     balance: 0,
     savingsRate: 0
   });
+
+  // Estado para las transacciones
+  const [transactions, setTransactions] = useState<any[]>([]);
 
   // --- CARGA DE DATOS ---
   useEffect(() => {
@@ -72,6 +75,26 @@ export default function DashboardPage() {
           balance: balance,
           savingsRate: savingsRate
         });
+
+        // 5. Combinar y preparar transacciones para el listado
+        const expensesWithType = Array.isArray(expensesData)
+          ? expensesData.map((e: any) => ({ ...e, type: 'expense' }))
+          : [];
+
+        const incomesWithType = Array.isArray(incomesData)
+          ? incomesData.map((i: any) => ({ ...i, type: 'income' }))
+          : [];
+
+        const allTransactions = [...expensesWithType, ...incomesWithType];
+
+        // 6. Ordenar por fecha (más reciente primero)
+        allTransactions.sort((a: any, b: any) => {
+          const dateA = new Date(a.date).getTime();
+          const dateB = new Date(b.date).getTime();
+          return dateB - dateA;
+        });
+
+        setTransactions(allTransactions);
 
       } catch (error) {
         console.error("Error cargando dashboard:", error);
@@ -161,7 +184,7 @@ export default function DashboardPage() {
 
       <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-3">
         <div className="lg:col-span-2">
-          <TransactionList />
+          <TransactionList transactions={transactions} isLoading={isLoading} />
         </div>
         <div className="lg:col-span-1">
           <KakeiTip />
