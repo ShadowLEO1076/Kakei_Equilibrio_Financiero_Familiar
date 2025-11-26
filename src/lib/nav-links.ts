@@ -26,16 +26,8 @@ export const navLinks = [
     label: "Informes",
     icon: FileText, // <-- Icono de Lucide
   },
-  {
-    href: "/profiles", // <-- ¡RUTA CORRECTA!
-    label: "Mi Perfil",
-    icon: User, // <-- Icono de Lucide // es un icono de la libreria lucide-react asi como Home, BarChart3, FileText, User
-  },
-  {
-    href: "/profiles", // <-- ¡RUTA CORRECTA!
-    label: "Configuracion",
-    icon: settings, // <-- Icono de Lucide // es un icono de la libreria lucide-react asi como Home, BarChart3, FileText, User
-  },
+
+
 
 
 

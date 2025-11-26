@@ -220,7 +220,7 @@ export default function ProfileSelectionPage() {
               className="w-full py-4 text-xl shadow-lg hover:scale-105 transition-transform"
               onClick={handleEnterDashboard}
             >
-              ➡️ ENTRAR AL DASHBOARD
+              ENTRAR AL DASHBOARD
             </Button>
 
             <div className="flex flex-col sm:flex-row justify-center gap-4 mt-2">
