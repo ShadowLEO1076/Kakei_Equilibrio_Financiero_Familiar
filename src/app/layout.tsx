@@ -2,6 +2,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { ThemeProvider } from "@/components/providers/ThemeProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,7 +19,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es">
+    <html lang="es" suppressHydrationWarning>
       {/* --- ¡AÑADIMOS EL <head> MANUALMENTE! --- */}
       {/* Next.js crea un <head> automático, pero necesitamos 
         añadir estas etiquetas específicas para que iOS (Apple) 
@@ -27,17 +28,23 @@ export default function RootLayout({
       <head>
         {/* Le dice a los iPhones que esta web-app puede correr a pantalla completa */}
         <meta name="apple-mobile-web-app-capable" content="yes" />
-        
+
         {/* Define el color de la barra de estado superior en iOS */}
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-        
+
         {/* El color de acento para la barra de UI del navegador (nuestro teal) */}
         <meta name="theme-color" content="#0f766e" />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+        />
       </head>
-      
+
       {/* Tu <body> original (sin cambios) */}
       <body className={`${inter.className} antialiased`}>
-        {children}
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );

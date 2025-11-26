@@ -2,8 +2,9 @@
 
 /* ¡Añade esto para tu fondo de bambú! */
 .bg-bamboo-pattern {
-  background-image: url('/images/bambu.png'); /* Ajusta esta ruta */
-  background-size: cover; /* O 'auto' si es un patrón repetible */
+  background-image: url('/images/bambu.png');
+  /* Ajusta esta ruta */
+  background-size: cover;
+  /* O 'auto' si es un patrón repetible */
   background-position: center;
 }
-
